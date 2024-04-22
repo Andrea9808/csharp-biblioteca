@@ -7,7 +7,7 @@ namespace csharp_biblioteca
         static void Main(string[] args)
         {
 
-            //ASSOCIATO SOLO UN UTENTE (MARIO ROSSI AL PRESTITO) AL LIBRO IT)
+            //ASSOCIATO SOLO UN UTENTE (MARIO ROSSI AL PRESTITO) AL LIBRO IT E CD BACK in BLACK
             // creazione di una nuova istanza della classe Biblioteca
             Biblioteca biblioteca = new Biblioteca();
 
@@ -18,6 +18,9 @@ namespace csharp_biblioteca
             biblioteca.AggiungiDocumento(new Libro("IBN005", "1984", 1949, "Dystopian", "B3", new Autore("George", "Orwell"), 328));
             biblioteca.AggiungiDocumento(new CD("IBN003", "The Shawshank Redemption", 1994, "Drama", "C3", new Autore("Frank", "Darabont"), "2 ore"));            
             biblioteca.AggiungiDocumento(new CD("IBN006", "The Dark Side of the Moon", 1973, "Rock", "C4", new Autore("Pink", "Floyd"), "43 min"));
+            biblioteca.AggiungiDocumento(new CD("IBN007", "Thriller", 1982, "Pop", "C5", new Autore("Michael", "Jackson"), "42 min"));
+            biblioteca.AggiungiDocumento(new CD("IBN008", "Back in Black", 1980, "Rock", "C6", new Autore("AC", "DC"), "42 min"));
+
 
             // aggiunta di utenti
             Utente marioRossi = new Utente("Rossi", "Mario", "mario.rossi@example.com", "password123", "1234567890");
@@ -27,9 +30,12 @@ namespace csharp_biblioteca
             Utente giovannaBianchi = new Utente("Bianchi", "Giovanna", "giovanna.bianchi@example.com", "password789", "5432167890");
             biblioteca.AggiungiUtente(giovannaBianchi);
 
-            // associazione di un utente ad almeno un libro in questo caso IT
+            // associazione di un utente ad almeno un libro in questo caso IT e BACK in BLACK
             Prestito prestito = new Prestito(marioRossi, biblioteca.Documenti[0], DateTime.Now.AddDays(-14), DateTime.Now.AddDays(14)); 
             biblioteca.AggiungiPrestito(prestito);
+
+            Prestito prestito2 = new Prestito(giovannaBianchi, biblioteca.Documenti[7], DateTime.Now.AddDays(-17), DateTime.Now.AddDays(11));
+            biblioteca.AggiungiPrestito(prestito2);
 
             Console.WriteLine("Inserisci un nome e cognome tra gli utenti pre-selezionati per verificare se un libro è stato preso in prestito:");
             Console.WriteLine("===============");
