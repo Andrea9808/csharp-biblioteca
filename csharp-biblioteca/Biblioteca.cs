@@ -267,6 +267,28 @@
             return cercaConTitolo;
         }
 
+        // Metodo per cercare prestiti dato nome e cognome dell'utente
+        public List<Prestito> CercaPrestitiPerUtente(string nome, string cognome)
+        {
+            // lista per memorizzare i prestiti trovati
+            List<Prestito> prestitiTrovati = new List<Prestito>();
+
+            // itera attraverso tutti i prestiti nella biblioteca
+            foreach (Prestito prestito in Prestiti)
+            {
+                // confronta nome e cognome dell'utente associato al prestito con quelli forniti
+                // ignora le differenze tra maiuscole e minuscole nella ricerca
+                if (prestito.Utente.Nome.ToLower() == nome.ToLower() && prestito.Utente.Cognome.ToLower() == cognome.ToLower())
+                {
+                    // Se l'utente è trovato, aggiungi il prestito alla lista dei risultati
+                    prestitiTrovati.Add(prestito);
+                }
+            }
+
+            // restituisce la lista dei prestiti trovati
+            return prestitiTrovati;
+        }
+
 
     }
 

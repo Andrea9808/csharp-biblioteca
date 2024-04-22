@@ -6,24 +6,64 @@ namespace csharp_biblioteca
     {
         static void Main(string[] args)
         {
+
+            //ASSOCIATO SOLO UN UTENTE (MARIO ROSSI AL PRESTITO) AL LIBRO IT)
             // creazione di una nuova istanza della classe Biblioteca
             Biblioteca biblioteca = new Biblioteca();
 
-            // aggiunta di alcuni documenti (libri e CD) e utenti di esempio
+            // aggiunta di libri e CD
             biblioteca.AggiungiDocumento(new Libro("IBN001", "It", 1986, "Horror", "A1", new Autore("Stephen", "King"), 1138));
             biblioteca.AggiungiDocumento(new Libro("IBN002", "Harry Potter and the Philosopher's Stone", 1997, "Fantasy", "B2", new Autore("J.K.", "Rowling"), 223));
-            biblioteca.AggiungiDocumento(new CD("IBN003", "The Shawshank Redemption", 1994, "Drama", "C3", new Autore("Frank", "Darabont"), "2 ore"));
+            biblioteca.AggiungiDocumento(new Libro("IBN004", "The Lord of the Rings", 1954, "Fantasy", "A2", new Autore("J.R.R.", "Tolkien"), 1178));
+            biblioteca.AggiungiDocumento(new Libro("IBN005", "1984", 1949, "Dystopian", "B3", new Autore("George", "Orwell"), 328));
+            biblioteca.AggiungiDocumento(new CD("IBN003", "The Shawshank Redemption", 1994, "Drama", "C3", new Autore("Frank", "Darabont"), "2 ore"));            
+            biblioteca.AggiungiDocumento(new CD("IBN006", "The Dark Side of the Moon", 1973, "Rock", "C4", new Autore("Pink", "Floyd"), "43 min"));
 
             // aggiunta di utenti
             Utente marioRossi = new Utente("Rossi", "Mario", "mario.rossi@example.com", "password123", "1234567890");
             biblioteca.AggiungiUtente(marioRossi);
+            Utente luigiVerdi = new Utente("Verdi", "Luigi", "luigi.verdi@example.com", "password456", "0987654321");
+            biblioteca.AggiungiUtente(luigiVerdi);
+            Utente giovannaBianchi = new Utente("Bianchi", "Giovanna", "giovanna.bianchi@example.com", "password789", "5432167890");
+            biblioteca.AggiungiUtente(giovannaBianchi);
 
             // associazione di un utente ad almeno un libro in questo caso IT
             Prestito prestito = new Prestito(marioRossi, biblioteca.Documenti[0], DateTime.Now.AddDays(-14), DateTime.Now.AddDays(14)); 
             biblioteca.AggiungiPrestito(prestito);
 
+            Console.WriteLine("Inserisci un nome e cognome tra gli utenti pre-selezionati per verificare se un libro è stato preso in prestito:");
+            Console.WriteLine("===============");
+            // richiesta all'utente di inserire nome e cognome per la ricerca
+            Console.WriteLine("Inserisci nome dell'utente:");
+            string nomeUtente = Console.ReadLine();
+            Console.WriteLine("Inserisci cognome dell'utente:");
+            string cognomeUtente = Console.ReadLine();
+
+            // ricerca dei prestiti per nome e cognome dell'utente
+            var prestitiUtente = biblioteca.CercaPrestitiPerUtente(nomeUtente, cognomeUtente);
+
+            // visualizzazione dei prestiti trovati
+            if (prestitiUtente.Count > 0)
+            {
+                Console.WriteLine($"I prestiti di {nomeUtente} {cognomeUtente} sono questi:");
+                foreach (Prestito p in prestitiUtente)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"- Titolo: {p.Documento.Titolo}," +
+                        $" \nData Inizio: {p.DataInizio.ToShortDateString()}," +
+                        $" \nData Fine: {p.DataFine.ToShortDateString()} - " +
+                        $"\nEmail: {p.Utente.Email} - " +
+                        $"\nNumero di telefono: {p.Utente.RecapitoTelefonico}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Nessun prestito trovato per {nomeUtente} {cognomeUtente}.");
+            }
+
+            Console.WriteLine();
             // visualizzazione dell'elenco dei documenti nella biblioteca
-            Console.WriteLine("Documenti nella biblioteca:");
+            Console.WriteLine("Libri e CD nella biblioteca:");
             foreach (Documento documento in biblioteca.Documenti)
             {
                 // stampa dei dettagli di ciascun documento
@@ -75,10 +115,16 @@ namespace csharp_biblioteca
                         if (p.Documento.CodiceIdentificativo == documento.CodiceIdentificativo)
                         {
                             presoInPrestito = true;
-                            Console.WriteLine($"Preso in prestito da: {prestito.Utente.Nome} {prestito.Utente.Cognome}");
-                            Console.WriteLine($"Data inizio prestito: {prestito.DataInizio}");
-                            Console.WriteLine($"Data fine prestito: {prestito.DataFine}");
+                            Console.WriteLine($"=======================:");
+                            Console.WriteLine($"PRESO IN PRESTITO DA:");
+                            Console.WriteLine($"- Nome e Cognome: {p.Utente.Nome} {p.Utente.Cognome}," +
+                               $" \nData Inizio: {p.DataInizio.ToShortDateString()}," +
+                               $" \nData Fine: {p.DataFine.ToShortDateString()}  " +
+                               $"\nEmail: {p.Utente.Email} - " +
+                               $"\nNumero di telefono: {p.Utente.RecapitoTelefonico}");
                             break;
+
+                            //ToShortDateString = trasforma la data in stringa
                         }
                     }
 
@@ -126,11 +172,18 @@ namespace csharp_biblioteca
                         {
                          
                             presoInPrestito = true;
-                            Console.WriteLine($"Preso in prestito da: {prestito.Utente.Nome} {prestito.Utente.Cognome}");
-                            Console.WriteLine($"Data inizio prestito: {prestito.DataInizio}");
-                            Console.WriteLine($"Data fine prestito: {prestito.DataFine}");
+                            Console.WriteLine($"=======================:");
+                            Console.WriteLine($"PRESO IN PRESTITO DA:");
+                            Console.WriteLine($"- Nome e Cognome: {p.Utente.Nome} {p.Utente.Cognome}," +
+                               $" \nData Inizio: {p.DataInizio.ToShortDateString()}," +
+                               $" \nData Fine: {p.DataFine.ToShortDateString()}  " +
+                               $"\nEmail: {p.Utente.Email} - " +
+                               $"\nNumero di telefono: {p.Utente.RecapitoTelefonico}");
                             break;
+
+                            //ToShortDateString = trasforma la data in stringa
                         }
+
                     }
 
                     // se il documento non è stato preso in prestito
@@ -148,3 +201,4 @@ namespace csharp_biblioteca
         }
     }
 }
+
